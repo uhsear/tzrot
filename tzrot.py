@@ -1426,6 +1426,16 @@ def self_test():
     check(_parse(["p.csv", "--json"]).json is True, "--json is read")
     check(_parse(["--self-test"]).self_test is True, "--self-test is read")
 
+    # ---- a unique prefix of the longest option is refused, not expanded
+    try:
+        capture(lambda: _parse(["--self"]))
+        prefix_refused = False
+    except SystemExit as exc:
+        prefix_refused = exc.code == 2
+    check(prefix_refused,
+          "a unique prefix of --self-test is refused, not expanded into it"
+          "  <-- pinned defect")
+
     # ---- nothing here opens a socket, and the source says so
     with open(os.path.abspath(__file__), "r", encoding="utf-8") as fh:
         source = fh.read()
@@ -1451,6 +1461,7 @@ def self_test():
 def _parse(argv):
     ap = argparse.ArgumentParser(
         prog="tzrot.py",
+        allow_abbrev=False,
         description="Find date fields reinterpreted as UTC, and count the "
                     "records whose calendar day moved.",
         epilog="Nothing is written. The crossing count is stated as damage "

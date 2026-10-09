@@ -48,16 +48,17 @@ PASS  both calendar-end sentinels are counted as unreadable rather than converte
 PASS  so the run finishes and says so, instead of ending in an OverflowError  <-- pinned defect
 PASS  and prints byte for byte the same report  <-- pinned defect
 PASS  --field naming a field that is not there is a usage error, not an empty report  <-- pinned defect
+PASS  a unique prefix of --self-test is refused, not expanded into it  <-- pinned defect
 PASS  tzrot imports no network module: there is no upload path to audit
 --------------------------------------------------------------------
-278 assertions, 0 failed
+279 assertions, 0 failed
 ```
 
 ## Requirements
 
 Python 3.9 or newer, for `zoneinfo`. Nothing to install, no `arcpy`, no third-party package. It
-runs on ArcGIS Pro's Python and on a plain `python3` equally: 278 assertions on Windows, 278 on
-Ubuntu, and the same 278 on the Pro interpreter.
+runs on ArcGIS Pro's Python and on a plain `python3` equally: 279 assertions on Windows
+(Python 3.13). The Ubuntu and Pro runs were not repeated after the `allow_abbrev` change.
 
 On Windows there is no system time zone database, so `zoneinfo` reads the `tzdata` package
 instead. ArcGIS Pro's Python has it. A bare `python.exe` may not, and the failure reads the same
